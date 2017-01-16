@@ -127,6 +127,20 @@ public class SerialportHandler {
   }
 
   /**
+   * @return the outStream
+   */
+  public OutputStream getOutStream() {
+    return outStream;
+  }
+
+  /**
+   * @return the inStream
+   */
+  public InputStream getInStream() {
+    return inStream;
+  }
+
+  /**
    * Sets the serial port parameters.
    */
   private void setSerialPortParameters() throws IOException {

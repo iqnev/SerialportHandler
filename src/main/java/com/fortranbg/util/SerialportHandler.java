@@ -71,7 +71,7 @@ public class SerialportHandler {
    * 
    * @param portName
    * @throws IOException
-   * @throws NoSuchPortException 
+   * @throws NoSuchPortException
    */
   public void openPort(final String portName) throws IOException, NoSuchPortException {
     if (portName == null) {
@@ -93,19 +93,37 @@ public class SerialportHandler {
     } catch (final PortInUseException e) {
       throw new IOException(e.getMessage());
     }
-    
+
     try {
-    
-    // Open the input and output streams for the connection.
-    // If they won't open, close the port before throwing an
-    // exception.
-    outStream = serialPort.getOutputStream();
-    inStream = serialPort.getInputStream();
-    }catch (IOException e) {
-      //TODO: close all stream
-     
+
+      // Open the input and output streams for the connection.
+      // If they won't open, close the port before throwing an
+      // exception.
+      outStream = serialPort.getOutputStream();
+      inStream = serialPort.getInputStream();
+    } catch (IOException e) {
+      // TODO: close all stream
+
     }
 
+  }
+
+  /**
+   * 
+   */
+  public void disconnect() {
+    if (serialPort != null) {
+      try {
+        // close the i/o streams.
+        outStream.close();
+        inStream.close();
+      } catch (IOException ex) {
+        // don't care
+      }
+      // Close the port.
+      serialPort.close();
+      serialPort = null;
+    }
   }
 
   /**

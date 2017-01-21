@@ -49,6 +49,11 @@ public class SerialportHandler {
    * The value of TIME OUT constant.
    */
   public static final int DEFAULT_TIME_OUT = 2000;
+  
+  /**
+   * The filed with a TimeOut value.
+   */
+  private int timeOut;
 
 
   /**
@@ -81,7 +86,7 @@ public class SerialportHandler {
    * 
    * @param portName the {@link CommPortIdentifier} object.
    * @throws IOException if {@link IOException} occurs.
-   * @throws NoSuchPortException
+   * @throws NoSuchPortException //TODO
    */
   public void openPort(final String portName) throws IOException, NoSuchPortException {
     if (portName == null) {
@@ -96,10 +101,12 @@ public class SerialportHandler {
 
     try {
       // Get the port's ownership
-      serialPort = (SerialPort) portId.open(SerialportHandler.class.getName(), DEFAULT_TIME_OUT);
+      serialPort = (SerialPort) portId.open(SerialportHandler.class.getName(), this.timeOut);
 
       // Set the parameters of the connection.
       setSerialPortParameters();
+      
+      this.serialPort.notifyOnDataAvailable(true);
     } catch (final PortInUseException e) {
       throw new IOException(e.getMessage());
     }
@@ -116,6 +123,23 @@ public class SerialportHandler {
 
     }
 
+  }
+
+  /**
+   * Check for available data.
+   * @return
+   */
+  public boolean isDataAvailable() {
+    boolean flag = false;
+    try {
+      if (this.inStream.available() != 0) {
+        flag = true;
+      }
+    } catch (IOException ex) {
+
+    }
+
+    return flag;
   }
 
   /**
@@ -136,6 +160,26 @@ public class SerialportHandler {
     }
   }
 
+  /**
+   * Sets TimeOut of serial connection
+   *
+   * @param timeOut
+   *            the TimeOut value.
+   */
+  public void setTimeOut(final int timeOut) {
+      this.timeOut = timeOut;
+  }
+  
+  /**
+   * Sets DataRade of the serial connection.
+   *
+   * @param dataRate
+   *            the DataRade value.
+   */
+  public void setDataRate(final int dataRate) {
+      this.dataRate = dataRate;
+  }
+  
   /**
    * @return the outStream
    */
@@ -161,8 +205,6 @@ public class SerialportHandler {
     try {
       this.serialPort.setSerialPortParams(this.dataRate, SerialPort.DATABITS_8,
           SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
-
-      this.serialPort.notifyOnDataAvailable(true);
     } catch (UnsupportedCommOperationException e) {
       throw new IOException("Unsupported serial port parameter");
     }

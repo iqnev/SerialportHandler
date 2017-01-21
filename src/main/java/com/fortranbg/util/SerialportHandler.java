@@ -76,9 +76,11 @@ public class SerialportHandler {
   }
 
   /**
+   * Opens a CommPort using {@link CommPortIdentifier} object. If the port is owned by some other
+   * application the method throws {@link IOException}.
    * 
-   * @param portName
-   * @throws IOException
+   * @param portName the {@link CommPortIdentifier} object.
+   * @throws IOException if {@link IOException} occurs.
    * @throws NoSuchPortException
    */
   public void openPort(final String portName) throws IOException, NoSuchPortException {
@@ -117,7 +119,7 @@ public class SerialportHandler {
   }
 
   /**
-   * 
+   * Disconnect the serial port.
    */
   public void disconnect() {
     if (serialPort != null) {
@@ -159,7 +161,7 @@ public class SerialportHandler {
     try {
       this.serialPort.setSerialPortParams(this.dataRate, SerialPort.DATABITS_8,
           SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
-      
+
       this.serialPort.notifyOnDataAvailable(true);
     } catch (UnsupportedCommOperationException e) {
       throw new IOException("Unsupported serial port parameter");
@@ -167,9 +169,12 @@ public class SerialportHandler {
   }
 
   /**
+   * Adds the specified {@link SerialPortEventListener} listener to receive
+   * {@link SerialportHandler} events. If listener deviceListener is null, no exception is thrown
+   * and no action is performed.
    * 
-   * @param listener
-   * @throws TooManyListenersException
+   * @param listener the {@link SerialPortEventListener} object.
+   * @throws TooManyListenersException if {@link TooManyListenersException} occurs.
    */
   public void addSerialEventListener(final SerialPortEventListener listener)
       throws TooManyListenersException {

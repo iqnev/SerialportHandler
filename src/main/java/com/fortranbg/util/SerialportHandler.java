@@ -18,12 +18,15 @@ import gnu.io.CommPortIdentifier;
 import gnu.io.NoSuchPortException;
 import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
+import gnu.io.SerialPortEventListener;
+import gnu.io.UnsupportedCommOperationException;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.TooManyListenersException;
 
 
 /**
@@ -36,6 +39,11 @@ public class SerialportHandler {
   private SerialPort serialPort;
   private OutputStream outStream;
   private InputStream inStream;
+
+  /**
+   * The filed with a DataRate value.
+   */
+  private int dataRate;
 
   /**
    * The value of TIME OUT constant.
@@ -142,9 +150,30 @@ public class SerialportHandler {
 
   /**
    * Sets the serial port parameters.
+   * 
+   * @throws IOException
+   * 
+   * @throws UnsupportedCommOperationException
    */
-  private void setSerialPortParameters() throws IOException {
-    // TODO
+  protected void setSerialPortParameters() throws IOException {
+    try {
+      this.serialPort.setSerialPortParams(this.dataRate, SerialPort.DATABITS_8,
+          SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+      
+      this.serialPort.notifyOnDataAvailable(true);
+    } catch (UnsupportedCommOperationException e) {
+      throw new IOException("Unsupported serial port parameter");
+    }
+  }
+
+  /**
+   * 
+   * @param listener
+   * @throws TooManyListenersException
+   */
+  public void addSerialEventListener(final SerialPortEventListener listener)
+      throws TooManyListenersException {
+    this.serialPort.addEventListener(listener);
   }
 
 }

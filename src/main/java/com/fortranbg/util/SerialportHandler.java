@@ -49,7 +49,7 @@ public class SerialportHandler {
    * The value of TIME OUT constant.
    */
   public static final int DEFAULT_TIME_OUT = 2000;
-  
+
   /**
    * The filed with a TimeOut value.
    */
@@ -86,47 +86,48 @@ public class SerialportHandler {
    * 
    * @param portName the {@link CommPortIdentifier} object.
    * @throws IOException if {@link IOException} occurs.
-   * @throws NoSuchPortException //TODO
    */
-  public void openPort(final String portName) throws IOException, NoSuchPortException {
-    if (portName == null) {
-      throw new NullPointerException("Com port is null");
-    }
-    // Obtain a CommPortIdentifier object for the port you want to open
-    CommPortIdentifier portId = CommPortIdentifier.getPortIdentifier(portName);
-
-    if (portId.isCurrentlyOwned()) {
-      throw new IllegalStateException("Com port in use");
-    }
-
+  public void openPort(final String portName) throws IOException {
     try {
+      if (portName == null) {
+        throw new NullPointerException("Com port is null");
+      }
+      // Obtain a CommPortIdentifier object for the port you want to open
+      CommPortIdentifier portId;
+      
+      portId = CommPortIdentifier.getPortIdentifier(portName);
+
+      if (portId.isCurrentlyOwned()) {
+        throw new IllegalStateException("Com port in use");
+      }
+
       // Get the port's ownership
-      serialPort = (SerialPort) portId.open(SerialportHandler.class.getName(), this.timeOut);
+      this.serialPort = (SerialPort) portId.open(SerialportHandler.class.getName(), this.timeOut);
 
       // Set the parameters of the connection.
       setSerialPortParameters();
-      
-      this.serialPort.notifyOnDataAvailable(true);
-    } catch (final PortInUseException e) {
-      throw new IOException(e.getMessage());
-    }
 
-    try {
+      this.serialPort.notifyOnDataAvailable(true);
 
       // Open the input and output streams for the connection.
       // If they won't open, close the port before throwing an
       // exception.
       outStream = serialPort.getOutputStream();
       inStream = serialPort.getInputStream();
+    } catch (NoSuchPortException e1) {
+      throw new IOException(e1.getMessage());
+    } catch (PortInUseException e) {
+      throw new IOException(e.getMessage());
     } catch (IOException e) {
-      // TODO: close all stream
-
+      this.serialPort.close();
+      throw e;
     }
 
   }
 
   /**
    * Check for available data.
+   * 
    * @return
    */
   public boolean isDataAvailable() {
@@ -163,23 +164,21 @@ public class SerialportHandler {
   /**
    * Sets TimeOut of serial connection
    *
-   * @param timeOut
-   *            the TimeOut value.
+   * @param timeOut the TimeOut value.
    */
   public void setTimeOut(final int timeOut) {
-      this.timeOut = timeOut;
+    this.timeOut = timeOut;
   }
-  
+
   /**
    * Sets DataRade of the serial connection.
    *
-   * @param dataRate
-   *            the DataRade value.
+   * @param dataRate the DataRade value.
    */
   public void setDataRate(final int dataRate) {
-      this.dataRate = dataRate;
+    this.dataRate = dataRate;
   }
-  
+
   /**
    * @return the outStream
    */
@@ -222,5 +221,25 @@ public class SerialportHandler {
       throws TooManyListenersException {
     this.serialPort.addEventListener(listener);
   }
+  
+  //TODO
+  public byte[] readBlocked(final int len)  {
+    return null;
+    
+  }
+  
+  //TODO
+  public void writeBlock(byte[] bytes) {
+    
+  }
+  
+  //TODO
+  public int getAvailableBytes() {
+    return dataRate;
+    
+  }
+  
+
+  
 
 }

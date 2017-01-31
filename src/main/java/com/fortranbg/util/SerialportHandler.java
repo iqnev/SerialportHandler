@@ -21,6 +21,7 @@ import gnu.io.SerialPort;
 import gnu.io.SerialPortEventListener;
 import gnu.io.UnsupportedCommOperationException;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -94,7 +95,7 @@ public class SerialportHandler {
       }
       // Obtain a CommPortIdentifier object for the port you want to open
       CommPortIdentifier portId;
-      
+
       portId = CommPortIdentifier.getPortIdentifier(portName);
 
       if (portId.isCurrentlyOwned()) {
@@ -221,25 +222,42 @@ public class SerialportHandler {
       throws TooManyListenersException {
     this.serialPort.addEventListener(listener);
   }
-  
-  //TODO
-  public byte[] readBlocked(final int len)  {
-    return null;
-    
+
+  /**
+   * This method reads block of data with size.
+   * 
+   * @param len the number of bytes to read.
+   * @return the bytes of array.
+   * @throws IOException if {@link IOException} occurs.
+   */
+  public byte[] readBlocked(final int len) throws IOException {
+    byte[] buff = new byte[len];
+
+    DataInputStream dInputStream = new DataInputStream(this.inStream);
+    dInputStream.readFully(buff, 0, len);
+
+    return buff;
   }
-  
-  //TODO
-  public void writeBlock(byte[] bytes) {
-    
+
+  /*
+   * Writes the specified byte to this byte array output stream.
+   * 
+   * @param bytes the byte to be written.
+   * 
+   * @throws IOException if {@link IOException} occurs.
+   */
+  public void writeBlock(final byte[] bytes) {
+
   }
-  
-  //TODO
+
+  /*
+   * 
+   */
   public int getAvailableBytes() {
     return dataRate;
-    
-  }
-  
 
-  
+  }
+
+
 
 }

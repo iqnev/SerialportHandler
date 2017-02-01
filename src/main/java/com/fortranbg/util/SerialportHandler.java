@@ -1,7 +1,8 @@
 /**
- * Copyright (c) 2017 Ivelin Yanev <>. This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option) any later version.
+ * Copyright (c) 2017 Ivelin Yanev <bgfortran@gmail.com>. This program is free software; you can
+ * redistribute it and/or modify it under the terms of the GNU General Public License as published
+ * by the Free Software Foundation; either version 2 of the License, or (at your option) any later
+ * version.
  * 
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
@@ -31,7 +32,11 @@ import java.util.TooManyListenersException;
 
 
 /**
- * @author Ivelin Yanev
+ * The <code>SerialportHandler</code> class representation <b>Serial Communication</b>. Serial
+ * communication is used for all long-haul communication and most computer networks, where the cost
+ * of cable and synchronization difficulties make parallel communication impractical.
+ * 
+ * @author Ivelin Yanev <bgfortran@gmail.com>
  * @since 2017
  *
  */
@@ -58,17 +63,33 @@ public class SerialportHandler {
 
 
   /**
-   * An explicit constructor.
+   * Static member class member that holds only one instance of the <code>StaticHolder</code> class.
+   *
    */
-  private SerialportHandler() {
-    throw new AssertionError();
+  private static class StaticHolder {
+    static final SerialportHandler INSTANCE = new SerialportHandler();
   }
 
   /**
+   * Providing Global point of access.
    * 
-   * @return
+   * @return {@link StaticHolder} object.
    */
-  public static ArrayList<String> listSerialPorts() {
+  public static SerialportHandler getSingleton() {
+    return StaticHolder.INSTANCE;
+  }
+
+  /**
+   * A private constructor, which prevents any other class from instantiating.
+   */
+  private SerialportHandler() {}
+
+  /**
+   * List the available serial ports.
+   * 
+   * @return the {@link ArrayList} with all available serial port names.
+   */
+  public  ArrayList<String> listSerialPorts() {
     Enumeration<?> portEnum = CommPortIdentifier.getPortIdentifiers();
 
     ArrayList<String> ports = new ArrayList<String>();
@@ -246,15 +267,21 @@ public class SerialportHandler {
    * 
    * @throws IOException if {@link IOException} occurs.
    */
-  public void writeBlock(final byte[] bytes) {
-
+  public void writeBlock(final byte[] bytes) throws IOException {
+    if (bytes == null) {
+      throw new NullPointerException("Byte buffer is empty");
+    }
+    this.outStream.write(bytes);
   }
 
-  /*
+  /**
+   * Gets all available data from input stream.
    * 
+   * @return the available data.
+   * @throws IOException if {@link IOException} occurs.
    */
-  public int getAvailableBytes() {
-    return dataRate;
+  public int getAvailableBytes() throws IOException {
+    return this.inStream.available();
 
   }
 

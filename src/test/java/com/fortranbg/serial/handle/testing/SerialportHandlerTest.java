@@ -14,6 +14,8 @@
  */
 package com.fortranbg.serial.handle.testing;
 
+import org.junit.Test;
+
 /**
  * @author Ivelin Yanev <bgfortran@gmail.com>
  * @since  2017 
@@ -21,4 +23,25 @@ package com.fortranbg.serial.handle.testing;
  */
 public class SerialportHandlerTest {
 
+  @Test
+  public void testConnect() {
+    //TODO
+  }
+  
+  @Test
+  public void testDisconnect() {
+    //TODO
+  }
+  
+  @Test
+  public void testCheckListSerialPorts() {
+    //TODO
+  }
+  
+  @Test
+  public void testReadBlocked() {
+    
+  }
+  
+  
 }

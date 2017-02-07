@@ -13,7 +13,7 @@
  * USA
  * 
  */
-package com.fortranbg.util;
+package com.fortranbg.serial.handle;
 
 import gnu.io.CommPortIdentifier;
 import gnu.io.NoSuchPortException;

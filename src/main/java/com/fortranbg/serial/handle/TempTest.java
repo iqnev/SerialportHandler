@@ -1,4 +1,4 @@
-package com.fortranbg.util;
+package com.fortranbg.serial.handle;
 
 import java.io.IOException;
 import java.util.ArrayList;

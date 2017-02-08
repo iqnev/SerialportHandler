@@ -26,6 +26,10 @@ import org.junit.Test;
  */
 public class SerialportHandlerTest {
 
+  @Test
+  public void testListSerialPorts() {
+    
+  }
   
   @Test
   public void testConnect() {

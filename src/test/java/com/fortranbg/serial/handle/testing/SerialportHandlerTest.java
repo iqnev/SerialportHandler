@@ -17,8 +17,11 @@ package com.fortranbg.serial.handle.testing;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import com.fortranbg.serial.handle.SerialportHandler;
 
 
@@ -40,7 +43,10 @@ public class SerialportHandlerTest {
   
   @Test
   public void testListSerialPorts() {
+    ArrayList<String> ports = sHandler.listSerialPorts(); 
     
+    assertNotNull("The list with serial ports is NULL", ports);
+    assertFalse("The list with serial ports is empty", ports.isEmpty());
   }
   
   @Test

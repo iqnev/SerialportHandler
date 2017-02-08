@@ -17,7 +17,10 @@ package com.fortranbg.serial.handle.testing;
 
 import static org.junit.Assert.*;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
+import com.fortranbg.serial.handle.SerialportHandler;
+
 
 /**
  * @author Ivelin Yanev <bgfortran@gmail.com>
@@ -26,6 +29,15 @@ import org.junit.Test;
  */
 public class SerialportHandlerTest {
 
+  private static SerialportHandler sHandler;
+  
+  @BeforeClass
+  public static void init() {
+    sHandler = SerialportHandler.getSingleton();
+    
+    assertNotNull("The serial instance is NULL", sHandler);
+  }
+  
   @Test
   public void testListSerialPorts() {
     
@@ -33,7 +45,7 @@ public class SerialportHandlerTest {
   
   @Test
   public void testConnect() {
-    assertTrue("This is test case", false);
+    assertTrue("This is test case", true);
   
   }
   

@@ -153,7 +153,8 @@ public class SerialportHandler {
     /**
      * Check for available data.
      * 
-     * @return
+     * @return <code>true<code> if data is available; <code>false</code>
+     *         otherwise.
      */
     public boolean isDataAvailable() {
         boolean flag = false;
@@ -207,14 +208,18 @@ public class SerialportHandler {
     }
 
     /**
-     * @return the outStream
+     * Gets the {@link OutputStream} object.
+     * 
+     * @return the {@link OutputStream} object.
      */
     public OutputStream getOutStream() {
         return outStream;
     }
 
     /**
-     * @return the inStream
+     * Gets the {@link InputStream} object.
+     * 
+     * @return the {@link InputStream} object.
      */
     public InputStream getInStream() {
         return inStream;

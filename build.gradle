@@ -14,5 +14,8 @@ dependencies {
 
     // Use JUnit test framework
     testCompile 'junit:junit:4.12'
+   testCompile "org.powermock:powermock-module-junit4:1.6.6"
+   testCompile "org.powermock:powermock-module-junit4-rule:1.6.6"
+   testCompile "org.powermock:powermock-api-mockito:1.6.6"
 }
 

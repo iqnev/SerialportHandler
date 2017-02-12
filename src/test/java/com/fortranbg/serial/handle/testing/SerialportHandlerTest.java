@@ -1,15 +1,16 @@
 /**
- * Copyright (c) 2017 Ivelin Yanev <bgfortran@gmail.com>.
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or (at your option) any later version. 
+ * Copyright (c) 2017 Ivelin Yanev <bgfortran@gmail.com>. This program is free software; you can
+ * redistribute it and/or modify it under the terms of the GNU General Public License as published
+ * by the Free Software Foundation; either version 2 of the License, or (at your option) any later
+ * version.
  * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110, USA
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110,
+ * USA
  * 
  */
 package com.fortranbg.serial.handle.testing;
@@ -41,53 +42,52 @@ import gnu.io.CommPortIdentifier;
  *
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ SerialportHandler.class })
+@PrepareForTest({SerialportHandler.class})
 public class SerialportHandlerTest {
 
-    @Mock
-    SerialportHandler sHandler;
+  @Mock
+  SerialportHandler sHandler;
+
+  @Before
+  public void setup() {
+    mockStatic(SerialportHandler.class);
+    when(sHandler.getSingleton()).thenReturn(sHandler);
+  }
+
+  @Test
+  public void testListSerialPorts() {
     Enumeration ports;
     Vector portsName;
+    portsName = new Vector();
+    portsName.addElement("/com/ax");
+    portsName.addElement("/com/bx");
+    ports = portsName.elements();
 
-    @Before
-    public void setup() {
-        mockStatic(SerialportHandler.class);
-        when(sHandler.getSingleton()).thenReturn(sHandler);
-        
-        portsName = new Vector();
-        portsName.addElement("/com/ax");
-        portsName.addElement("/com/bx");
-        ports = portsName.elements();
-    }
+    when(sHandler.listSerialPorts()).thenReturn(new ArrayList<String>(portsName));
+    ArrayList<String> p = sHandler.listSerialPorts();
+    assertEquals("Тhe ports are not expected", p, new ArrayList<String>(portsName));
 
-    @Test
-    public void testListSerialPorts() {
-        CommPortIdentifier a = mock(CommPortIdentifier.class);
-        when(a.getPortIdentifiers()).thenReturn(ports);
+  }
 
-        ArrayList<String> p = sHandler.listSerialPorts();
-        assertEquals(p, new ArrayList<String>(portsName));
-    }
+  @Test
+  public void testConnect() {
+    assertTrue("This is test case", true);
 
-    @Test
-    public void testConnect() {
-        assertTrue("This is test case", true);
+  }
 
-    }
+  @Test
+  public void testDisconnect() {
+    // TODO
+  }
 
-    @Test
-    public void testDisconnect() {
-        // TODO
-    }
+  @Test
+  public void testCheckListSerialPorts() {
+    // TODO
+  }
 
-    @Test
-    public void testCheckListSerialPorts() {
-        // TODO
-    }
+  @Test
+  public void testReadBlocked() {
 
-    @Test
-    public void testReadBlocked() {
-
-    }
+  }
 
 }
